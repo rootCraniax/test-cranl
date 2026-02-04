@@ -1,12 +1,7 @@
-import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return redirect('/auth/sign-in');
-  } else {
-    redirect('/dashboard/overview');
-  }
+  // Authentication has been removed. Implement your own auth check here.
+  // For now, redirect to overview
+  redirect('/dashboard/overview');
 }

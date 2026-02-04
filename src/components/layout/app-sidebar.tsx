@@ -28,10 +28,8 @@ import {
   SidebarMenuSubItem,
   SidebarRail
 } from '@/components/ui/sidebar';
-import { UserAvatarProfile } from '@/components/user-avatar-profile';
 import { navItems } from '@/config/nav-config';
 import { useMediaQuery } from '@/hooks/use-media-query';
-import { useOrganization, useUser } from '@clerk/nextjs';
 import { useFilteredNavItems } from '@/hooks/use-nav';
 import {
   IconBell,
@@ -41,7 +39,7 @@ import {
   IconLogout,
   IconUserCircle
 } from '@tabler/icons-react';
-import { SignOutButton } from '@clerk/nextjs';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -51,10 +49,15 @@ import { OrgSwitcher } from '../org-switcher';
 export default function AppSidebar() {
   const pathname = usePathname();
   const { isOpen } = useMediaQuery();
-  const { user } = useUser();
-  const { organization } = useOrganization();
   const router = useRouter();
   const filteredItems = useFilteredNavItems(navItems);
+
+  // Mock user data - replace with your own auth solution
+  const user = {
+    fullName: 'Demo User',
+    email: 'demo@example.com',
+    initials: 'DU'
+  };
 
   React.useEffect(() => {
     // Side effects based on sidebar state changes
@@ -134,13 +137,13 @@ export default function AppSidebar() {
                   size='lg'
                   className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
                 >
-                  {user && (
-                    <UserAvatarProfile
-                      className='h-8 w-8 rounded-lg'
-                      showInfo
-                      user={user}
-                    />
-                  )}
+                  <Avatar className='h-8 w-8 rounded-lg'>
+                    <AvatarFallback>{user.initials}</AvatarFallback>
+                  </Avatar>
+                  <div className='grid flex-1 text-left text-sm leading-tight'>
+                    <span className='truncate font-semibold'>{user.fullName}</span>
+                    <span className='truncate text-xs'>{user.email}</span>
+                  </div>
                   <IconChevronsDown className='ml-auto size-4' />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -151,14 +154,14 @@ export default function AppSidebar() {
                 sideOffset={4}
               >
                 <DropdownMenuLabel className='p-0 font-normal'>
-                  <div className='px-1 py-1.5'>
-                    {user && (
-                      <UserAvatarProfile
-                        className='h-8 w-8 rounded-lg'
-                        showInfo
-                        user={user}
-                      />
-                    )}
+                  <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
+                    <Avatar className='h-8 w-8 rounded-lg'>
+                      <AvatarFallback>{user.initials}</AvatarFallback>
+                    </Avatar>
+                    <div className='grid flex-1 text-left text-sm leading-tight'>
+                      <span className='truncate font-semibold'>{user.fullName}</span>
+                      <span className='truncate text-xs'>{user.email}</span>
+                    </div>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -170,23 +173,21 @@ export default function AppSidebar() {
                     <IconUserCircle className='mr-2 h-4 w-4' />
                     Profile
                   </DropdownMenuItem>
-                  {organization && (
-                    <DropdownMenuItem
-                      onClick={() => router.push('/dashboard/billing')}
-                    >
-                      <IconCreditCard className='mr-2 h-4 w-4' />
-                      Billing
-                    </DropdownMenuItem>
-                  )}
+                  <DropdownMenuItem
+                    onClick={() => router.push('/dashboard/billing')}
+                  >
+                    <IconCreditCard className='mr-2 h-4 w-4' />
+                    Billing
+                  </DropdownMenuItem>
                   <DropdownMenuItem>
                     <IconBell className='mr-2 h-4 w-4' />
                     Notifications
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/auth/sign-in')}>
                   <IconLogout className='mr-2 h-4 w-4' />
-                  <SignOutButton redirectUrl='/auth/sign-in' />
+                  Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
