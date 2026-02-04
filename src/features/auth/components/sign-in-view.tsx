@@ -1,6 +1,8 @@
 import { buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { SignIn as ClerkSignInForm } from '@clerk/nextjs';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { IconStar } from '@tabler/icons-react';
 import { Metadata } from 'next';
@@ -78,11 +80,28 @@ export default function SignInViewPage({ stars }: { stars: number }) {
               <span className='font-display font-medium'>{stars}</span>
             </div>
           </Link>
-          <ClerkSignInForm
-            initialValues={{
-              emailAddress: 'your_mail+clerk_test@example.com'
-            }}
-          />
+
+          <div className='w-full space-y-4'>
+            <div className='space-y-2'>
+              <h1 className='text-2xl font-semibold tracking-tight'>
+                Sign in to your account
+              </h1>
+              <p className='text-sm text-muted-foreground'>
+                Authentication system has been removed. Implement your own auth solution.
+              </p>
+            </div>
+            <div className='space-y-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='email'>Email</Label>
+                <Input id='email' type='email' placeholder='your_mail@example.com' />
+              </div>
+              <div className='space-y-2'>
+                <Label htmlFor='password'>Password</Label>
+                <Input id='password' type='password' />
+              </div>
+              <Button className='w-full'>Sign In</Button>
+            </div>
+          </div>
 
           <p className='text-muted-foreground px-8 text-center text-sm'>
             By clicking continue, you agree to our{' '}

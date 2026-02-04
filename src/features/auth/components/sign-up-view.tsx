@@ -1,6 +1,5 @@
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { SignUp as ClerkSignUpForm } from '@clerk/nextjs';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { IconStar } from '@tabler/icons-react';
 import { Metadata } from 'next';
@@ -78,11 +77,16 @@ export default function SignUpViewPage({ stars }: { stars: number }) {
               <span className='font-display font-medium'>{stars}</span>
             </div>
           </Link>
-          <ClerkSignUpForm
-            initialValues={{
-              emailAddress: 'your_mail+clerk_test@example.com'
-            }}
-          />
+          <div className='w-full space-y-4'>
+            <div className='space-y-2'>
+              <h1 className='text-2xl font-semibold tracking-tight'>
+                Create an account
+              </h1>
+              <p className='text-sm text-muted-foreground'>
+                Authentication system has been removed. Implement your own auth solution.
+              </p>
+            </div>
+          </div>
           <p className='text-muted-foreground px-8 text-center text-sm'>
             By clicking continue, you agree to our{' '}
             <Link
